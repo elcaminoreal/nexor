@@ -17,6 +17,9 @@ mypy = ["mypy"]
 lint = ["flake8", "black"]
 docs = ["sphinx"]
 
+[project.entry-points.gather]
+placeholder = "nexor:placeholder"
+
 [project.license]
 text = """
 Permission is hereby granted, free of charge, to any person obtaining a
