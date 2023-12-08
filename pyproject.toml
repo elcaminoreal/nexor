@@ -10,6 +10,7 @@ version = "2022.3.6.2"
 description = "A Python tooling nexus"
 readme = "README.rst"
 authors = [{name = "Moshe Zadka", email = "moshez@zadka.club"}]
+dependencies = ["gather", "copier"]
 
 [project.optional-dependencies]
 tests = ["virtue", "pyhamcrest", "coverage"]
@@ -18,7 +19,7 @@ lint = ["flake8", "black"]
 docs = ["sphinx"]
 
 [project.entry-points.gather]
-placeholder = "nexor:placeholder"
+placeholder = "nexor"
 
 [project.license]
 text = """
