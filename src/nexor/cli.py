@@ -1,5 +1,7 @@
 import argparse
+import functools
 from typing import Sequence, Mapping, Callable
+import sys
 
 import gather
 from gather.commands import add_argument
@@ -13,7 +15,7 @@ def command(*args, name=None):
     )
 
 @command(
-    add_argument("--no-dry-run", default=False),
+    add_argument("--no-dry-run", action="store_true", default=False),
     add_argument("-d", "--description", required=True),
 )
 def init(args):
@@ -26,20 +28,24 @@ def init(args):
     # parse `git log --max-count 1 --format=email`
     # for `maintainer_name`, `maintainer_email`
     # `short_description` from args.
-    return args.run(
+    copy_command = [
         sys.executable,
         "-m",
         "copier",
         "copy",
         "gh:moshez/python-standard.git",
         ".",
-    )
+    ]
+    print("Running copier:", " ".join(copy_command))
+    if args.no_dry_run:
+        args.run(copy_command)
+        
 
 def wrap_run(run):
     # Eventually add notes
-    return partial(
+    return functools.partial(
         run,
-        capture_output=True,
+        # capture_output=True,
         text=True,
         check=True,
     )
