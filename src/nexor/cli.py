@@ -28,18 +28,32 @@ def init(args):
     # parse `git log --max-count 1 --format=email`
     # for `maintainer_name`, `maintainer_email`
     # `short_description` from args.
-    copy_command = [
-        sys.executable,
-        "-m",
-        "copier",
-        "copy",
-        "gh:moshez/python-standard.git",
-        ".",
-    ]
-    print("Running copier:", " ".join(copy_command))
-    if args.no_dry_run:
-        args.run(copy_command)
-        
+    make_execute(args)(
+        [
+            sys.executable,
+            "-m",
+            "copier",
+            "copy",
+            "gh:moshez/python-standard.git",
+            ".",
+        ]
+    )
+    
+def make_execute(args):
+    def _wrapped(command, **kwargs):
+        print("Command", *command)
+        if args.no_dry_run:
+            return run(argv, **command)
+        else:
+            print("Dry run, skipping')
+    return _wrapped
+
+
+@command(
+    add_argument("--no-dry-run", action="store_true", default=False),
+)
+def relock(args):
+    pip_compile
 
 def wrap_run(run):
     # Eventually add notes
