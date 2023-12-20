@@ -45,15 +45,10 @@ def make_execute(args):
         if args.no_dry_run:
             return run(argv, **command)
         else:
-            print("Dry run, skipping')
+            print("Dry run, skipping")
     return _wrapped
 
 
-@command(
-    add_argument("--no-dry-run", action="store_true", default=False),
-)
-def relock(args):
-    pip_compile
 
 def wrap_run(run):
     # Eventually add notes
