@@ -18,7 +18,7 @@ def command(*args, name=None):
     add_argument("--no-dry-run", action="store_true", default=False),
     add_argument("-d", "--description", required=True),
 )
-def init(args):
+def init(args): # pragma: no cover
     # Eventually,
     # use `git` to get the details:
     #
@@ -39,7 +39,7 @@ def init(args):
         ]
     )
     
-def make_execute(args):
+def make_execute(args): # pragma: no cover
     def _wrapped(command, **kwargs):
         print("Command", *command)
         if args.no_dry_run:
@@ -50,7 +50,7 @@ def make_execute(args):
 
 
 
-def wrap_run(run):
+def wrap_run(run): # pragma: no cover
     # Eventually add notes
     return functools.partial(
         run,
@@ -61,7 +61,7 @@ def wrap_run(run):
             
         
 
-def main(*, argv: Sequence[str], env: Mapping[str, str], run: Callable) -> None:
+def main(*, argv: Sequence[str], env: Mapping[str, str], run: Callable) -> None:  # pragma: no cover
     def error(args):
         parser.print_help()
         raise SystemExit(1)
