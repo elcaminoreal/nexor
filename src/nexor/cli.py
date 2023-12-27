@@ -8,17 +8,19 @@ from gather.commands import add_argument
 
 _SUBCOMMANDS = gather.Collector()
 
+
 def command(*args, name=None):
     return _SUBCOMMANDS.register(
         transform=gather.Wrapper.glue(args),
         name=name,
     )
 
+
 @command(
     add_argument("--no-dry-run", action="store_true", default=False),
     add_argument("-d", "--description", required=True),
 )
-def init(args): # pragma: no cover
+def init(args):  # pragma: no cover
     # Eventually,
     # use `git` to get the details:
     #
@@ -38,19 +40,20 @@ def init(args): # pragma: no cover
             ".",
         ]
     )
-    
-def make_execute(args): # pragma: no cover
+
+
+def make_execute(args):  # pragma: no cover
     def _wrapped(command, **kwargs):
         print("Command", *command)
         if args.no_dry_run:
             return run(argv, **command)
         else:
             print("Dry run, skipping")
+
     return _wrapped
 
 
-
-def wrap_run(run): # pragma: no cover
+def wrap_run(run):  # pragma: no cover
     # Eventually add notes
     return functools.partial(
         run,
@@ -58,13 +61,15 @@ def wrap_run(run): # pragma: no cover
         text=True,
         check=True,
     )
-            
-        
 
-def main(*, argv: Sequence[str], env: Mapping[str, str], run: Callable) -> None:  # pragma: no cover
+
+def main(
+    *, argv: Sequence[str], env: Mapping[str, str], run: Callable
+) -> None:  # pragma: no cover
     def error(args):
         parser.print_help()
         raise SystemExit(1)
+
     commands = gather.unique(_SUBCOMMANDS.collect())
     parser = argparse.ArgumentParser()
     parser.set_defaults(
