@@ -46,7 +46,7 @@ def make_execute(args):  # pragma: no cover
     def _wrapped(command, **kwargs):
         print("Command", *command)
         if args.no_dry_run:
-            return run(argv, **command)
+            return args.run(command, **kwargs)
         else:
             print("Dry run, skipping")
 
