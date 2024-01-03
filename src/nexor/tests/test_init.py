@@ -4,6 +4,7 @@ from hamcrest import assert_that, contains_string
 from .. import __version__
 from .. import cli
 from .. import lock
+from .. import init_py
 
 
 class TestInit(unittest.TestCase):
@@ -15,3 +16,6 @@ class TestInit(unittest.TestCase):
 
     def test_lock(self):
         assert_that(lock.__doc__ or "", contains_string(""))
+
+    def test_init_py(self):
+        assert_that(init_py.__doc__ or "", contains_string(""))

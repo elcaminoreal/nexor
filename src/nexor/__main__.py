@@ -9,7 +9,7 @@ if __name__ != "__main__":
     raise ImportError("module cannot be imported")
 
 logging.basicConfig(
-    format='%(asctime)s:%(levelname)s:%(name)s:%(message)s',
+    format="%(asctime)s:%(levelname)s:%(name)s:%(message)s",
     level=logging.INFO,
 )
 cli.main(

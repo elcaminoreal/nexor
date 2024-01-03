@@ -12,6 +12,7 @@ LOGGER = logging.getLogger(__name__)
 
 _SUBCOMMANDS = gather.Collector()
 
+
 def command(*args, name=None):
     return _SUBCOMMANDS.register(
         transform=gather.Wrapper.glue(args),
@@ -19,9 +20,9 @@ def command(*args, name=None):
     )
 
 
-
 def wrap_run(args):  # pragma: no cover
     orig_run = args.orig_run
+
     @functools.wraps(orig_run)
     def wrapped_run(cmdargs, **kwargs):
         real_kwargs = dict(text=True, check=True, capture_output=True)
@@ -33,13 +34,16 @@ def wrap_run(args):  # pragma: no cover
             exc.add_note(f"STDERR: {exc.stderr}")
             exc.add_note(f"STDOUT: {exc.stdout}")
             raise
+
     @functools.wraps(orig_run)
     def wrapped_dry_run(cmdargs, **kwargs):
         LOGGER.info("Running: %s", cmdargs)
         LOGGER.info("Dry run, skipping")
+
     unsafe_run = wrapped_run if args.no_dry_run else wrapped_dry_run
     args.run = unsafe_run
     args.safe_run = wrapped_run
+
 
 def main(
     *, argv: Sequence[str], env: Mapping[str, str], run: Callable
