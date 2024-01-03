@@ -19,31 +19,6 @@ def command(*args, name=None):
     )
 
 
-@command(
-    add_argument("--no-dry-run", action="store_true", default=False),
-    add_argument("-d", "--description", required=True),
-)
-def init(args):  # pragma: no cover
-    # Eventually,
-    # use `git` to get the details:
-    #
-    # --data VARIABLE=VALUE
-    # `project_name`/`organization`:
-    # parse `git remote get-url origin`
-    # parse `git log --max-count 1 --format=email`
-    # for `maintainer_name`, `maintainer_email`
-    # `short_description` from args.
-    args.run(
-        [
-            sys.executable,
-            "-m",
-            "copier",
-            "copy",
-            "gh:moshez/python-standard.git",
-            args.env["PWD"],
-        ],
-        capture_output=False,
-    )
 
 def wrap_run(args):  # pragma: no cover
     orig_run = args.orig_run
