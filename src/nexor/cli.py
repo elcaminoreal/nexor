@@ -1,13 +1,16 @@
 import argparse
 import functools
+import logging
 from typing import Sequence, Mapping, Callable
+import subprocess
 import sys
 
 import gather
 from gather.commands import add_argument
 
-_SUBCOMMANDS = gather.Collector()
+LOGGER = logging.getLogger(__name__)
 
+_SUBCOMMANDS = gather.Collector()
 
 def command(*args, name=None):
     return _SUBCOMMANDS.register(
@@ -30,38 +33,38 @@ def init(args):  # pragma: no cover
     # parse `git log --max-count 1 --format=email`
     # for `maintainer_name`, `maintainer_email`
     # `short_description` from args.
-    make_execute(args)(
+    args.run(
         [
             sys.executable,
             "-m",
             "copier",
             "copy",
             "gh:moshez/python-standard.git",
-            ".",
-        ]
+            args.env["PWD"],
+        ],
+        capture_output=False,
     )
 
-
-def make_execute(args):  # pragma: no cover
-    def _wrapped(command, **kwargs):
-        print("Command", *command)
-        if args.no_dry_run:
-            return args.run(command, **kwargs)
-        else:
-            print("Dry run, skipping")
-
-    return _wrapped
-
-
-def wrap_run(run):  # pragma: no cover
-    # Eventually add notes
-    return functools.partial(
-        run,
-        # capture_output=True,
-        text=True,
-        check=True,
-    )
-
+def wrap_run(args):  # pragma: no cover
+    orig_run = args.orig_run
+    @functools.wraps(orig_run)
+    def wrapped_run(cmdargs, **kwargs):
+        real_kwargs = dict(text=True, check=True, capture_output=True)
+        real_kwargs.update(kwargs)
+        LOGGER.info("Running: %s", cmdargs)
+        try:
+            return orig_run(cmdargs, **real_kwargs)
+        except subprocess.CalledProcessError as exc:
+            exc.add_note(f"STDERR: {exc.stderr}")
+            exc.add_note(f"STDOUT: {exc.stdout}")
+            raise
+    @functools.wraps(orig_run)
+    def wrapped_dry_run(cmdargs, **kwargs):
+        LOGGER.info("Running: %s", cmdargs)
+        LOGGER.info("Dry run, skipping")
+    unsafe_run = wrapped_run if args.no_dry_run else wrapped_dry_run
+    args.run = unsafe_run
+    args.safe_run = wrapped_run
 
 def main(
     *, argv: Sequence[str], env: Mapping[str, str], run: Callable
@@ -75,7 +78,6 @@ def main(
     parser.set_defaults(
         command=error,
         env=env,
-        run=wrap_run(run),
         orig_run=run,
     )
     subparsers = parser.add_subparsers()
@@ -86,4 +88,5 @@ def main(
         for argset in args:
             a_subparser.add_argument(*argset.args, **dict(argset.kwargs))
     args = parser.parse_args(argv[1:])
+    wrap_run(args)
     args.command(args)
