@@ -1,10 +1,15 @@
 import argparse
 import functools
 import logging
+import os
+import pathlib
+import textwrap
 from typing import Sequence, Mapping, Callable
 import subprocess
+import sys
 
 import gather
+from gather.commands import add_argument
 
 LOGGER = logging.getLogger(__name__)
 
@@ -18,7 +23,7 @@ def command(*args, name=None):
     )
 
 
-def wrap_run(args):  # pragma: no cover
+def _wrap_run(args):
     orig_run = args.orig_run
 
     @functools.wraps(orig_run)
@@ -42,10 +47,25 @@ def wrap_run(args):  # pragma: no cover
     args.run = unsafe_run
     args.safe_run = wrapped_run
 
-
+@command(
+    add_argument("--no-dry-run", action="store_true", default=False),
+    add_argument("--output-dir", required=True),
+)
+def self_test(args):
+    output_dir = pathlib.Path(args.output_dir)
+    safe = os.fspath(output_dir / "safe.txt")
+    unsafe = os.fspath(output_dir / "unsafe.txt")
+    code = textwrap.dedent("""\
+    import pathlib
+    import sys
+    pathlib.Path(sys.argv[1]).write_text(str(1 + 1))
+    """)
+    args.run([sys.executable, "-c", code, unsafe])
+    args.safe_run([sys.executable, "-c", code, safe])
+    
 def main(
     *, argv: Sequence[str], env: Mapping[str, str], run: Callable
-) -> None:  # pragma: no cover
+) -> None:
     def error(args):
         parser.print_help()
         raise SystemExit(1)
@@ -56,6 +76,7 @@ def main(
         command=error,
         env=env,
         orig_run=run,
+        no_dry_run=False,
     )
     subparsers = parser.add_subparsers()
     for name, value in commands.items():
@@ -65,5 +86,5 @@ def main(
         for argset in args:
             a_subparser.add_argument(*argset.args, **dict(argset.kwargs))
     args = parser.parse_args(argv[1:])
-    wrap_run(args)
+    _wrap_run(args)
     args.command(args)
