@@ -16,6 +16,3 @@ class TestInit(unittest.TestCase):
 
     def test_lock(self):
         assert_that(lock.__doc__ or "", contains_string(""))
-
-    def test_init_py(self):
-        assert_that(init_py.__doc__ or "", contains_string(""))
