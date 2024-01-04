@@ -4,7 +4,6 @@ from hamcrest import assert_that, contains_string
 from .. import __version__
 from .. import cli
 from .. import lock
-from .. import init_py
 
 
 class TestInit(unittest.TestCase):
