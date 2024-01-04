@@ -7,7 +7,8 @@ import logging
 import attrs
 import hyperlink
 
-from .cli import command, add_argument
+from .cli import command
+from gather.commands import add_argument
 
 LOGGER = logging.getLogger(__name__)
 
@@ -43,7 +44,7 @@ def parse_remote(db, git_remote_output):  # pragma: no cover
     link = hyperlink.parse(git_remote_output.strip())
     organization, name = link.path[-2:]
     db = db.inform("organization", organization)
-    db = db.inform("name", name)
+    db = db.inform("name", name.removesuffix(".git"))
     return db
 
 
@@ -85,19 +86,19 @@ ARGS_TO_FIELDS = dict(
 )
 def init(args):  # pragma: no cover
     data, has_git = get_details(args)
+    cmdline = [
+        sys.executable,
+        "-m",
+        "copier",
+        "copy",
+        "gh:moshez/python-standard.git",
+        args.env["PWD"],
+    ]
+    cmdline += [
+        f"--data={ARGS_TO_FIELDS.get(key, key)}={value}" for key, value in data.items()
+    ]
     args.run(
-        [
-            sys.executable,
-            "-m",
-            "copier",
-            "copy",
-            "gh:moshez/python-standard.git",
-            args.env["PWD"],
-        ]
-        + [
-            f"--data={ARGS_TO_FIELDS.get(key, key)}={value}"
-            for key, value in data.items()
-        ],
+        cmdline,
         capture_output=False,
     )
     if not has_git:

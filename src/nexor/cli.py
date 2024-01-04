@@ -3,10 +3,8 @@ import functools
 import logging
 from typing import Sequence, Mapping, Callable
 import subprocess
-import sys
 
 import gather
-from gather.commands import add_argument
 
 LOGGER = logging.getLogger(__name__)
 

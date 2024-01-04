@@ -3,7 +3,8 @@ import sys
 
 import tomlkit
 
-from .cli import command, add_argument
+from .cli import command
+from gather.commands import add_argument
 
 compilation_command = [
     sys.executable,
