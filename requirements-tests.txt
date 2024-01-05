@@ -32,7 +32,7 @@ dunamai==1.19.0
     # via copier
 funcy==2.0
     # via copier
-gather==2023.1.20.1
+gather==2024.1.5.1
     # via nexor (pyproject.toml)
 hyperlink==21.0.0
     # via

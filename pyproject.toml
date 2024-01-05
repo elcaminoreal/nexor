@@ -1,16 +1,16 @@
 [build-system]
 requires = [
-    "setuptools"
+    "setuptools", "autocalver"
 ]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "nexor"
-version = "2022.3.6.2"
+dynamic = ["version"]
 description = "A Python tooling nexus"
 readme = "README.rst"
 authors = [{name = "Moshe Zadka", email = "moshez@zadka.club"}]
-dependencies = ["gather", "copier", "tomlkit", "hyperlink"]
+dependencies = ["gather>=2024.1.5.1", "copier", "tomlkit", "hyperlink"]
 
 [project.optional-dependencies]
 tests = ["virtue", "pyhamcrest", "coverage"]
@@ -43,3 +43,10 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 [project.urls]
 Homepage = "https://github.com/moshez/nexor"
+
+[tool.autocalver]
+use = true
+log = "git-log-head"
+log_command = "git log -n 1 --date=iso"
+is_main_var = "GITHUB_REF"
+is_main_match = ".*/trunk$"
