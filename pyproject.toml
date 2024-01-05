@@ -53,4 +53,4 @@ is_main_match = ".*/trunk$"
 
 [project.scripts]
 nexor = "nexor.cli:main_command"
-nexor-version = "nexor.cli:sub_command"
+nexor-version = "nexor.cli:ns.sub_command"
