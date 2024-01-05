@@ -4,21 +4,18 @@ import logging
 from typing import Sequence, Mapping, Callable
 import runpy
 
-import gather
-from gather import commands as commandslib
+import gather.commands
 import toolz
 
 from . import __version__
 
-LOGGER = logging.getLogger(__name__)
 SUBCOMMANDS = gather.Collector()
 command = commandslib.make_command_register(SUBCOMMANDS)
 
 
 @command()
-def version(args):
+def version(args: argparse.ArgumentParser) -> None:
     print(__version__)
-    raise SystemExit(0)
 
 main_command = toolz.compose(
     lambda _ignored: None,
@@ -29,12 +26,4 @@ main_command = toolz.compose(
     ),
 )
 
-sub_command = toolz.compose(
-    lambda _ignored: None,
-    functools.partial(
-        runpy.run_module,
-        "nexor",
-        run_name="__main__",
-        init_globals=dict(IS_SUBCOMMAND=True),
-    ),
-)
+sub_command = functools.partial(main_command, init_globals=dict(IS_SUBCOMMAND=True))

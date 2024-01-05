@@ -17,9 +17,6 @@ logging.basicConfig(
 
 commandslib.run_maybe_dry(
     parser=commandslib.set_parser(collected=cli.SUBCOMMANDS.collect()),
-    argv=sys.argv,
-    env=os.environ,
-    sp_run=subprocess.run,
     is_subcommand=globals().get("IS_SUBCOMMAND", False),
     prefix="nexor",
 )
