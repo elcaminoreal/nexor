@@ -10,7 +10,7 @@ dynamic = ["version"]
 description = "A Python tooling nexus"
 readme = "README.rst"
 authors = [{name = "Moshe Zadka", email = "moshez@zadka.club"}]
-dependencies = ["gather>=2024.1.5.1", "copier", "tomlkit", "hyperlink"]
+dependencies = ["gather>=2024.1.5.2", "copier", "tomlkit", "hyperlink", "toolz"]
 
 [project.optional-dependencies]
 tests = ["virtue", "pyhamcrest", "coverage"]
