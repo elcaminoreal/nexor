@@ -50,3 +50,7 @@ log = "git-log-head"
 log_command = "git log -n 1 --date=iso"
 is_main_var = "GITHUB_REF"
 is_main_match = ".*/trunk$"
+
+[project.scripts]
+nexor = "nexor.cli:main_command"
+nexor-version = "nexor.cli:sub_command"
