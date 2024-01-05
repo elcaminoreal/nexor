@@ -10,7 +10,7 @@ version = "2022.3.6.2"
 description = "A Python tooling nexus"
 readme = "README.rst"
 authors = [{name = "Moshe Zadka", email = "moshez@zadka.club"}]
-dependencies = ["gather", "copier", "tomlkit", "hyperlink"]
+dependencies = ["gather>=2024.1.5.1", "copier", "tomlkit", "hyperlink"]
 
 [project.optional-dependencies]
 tests = ["virtue", "pyhamcrest", "coverage"]
