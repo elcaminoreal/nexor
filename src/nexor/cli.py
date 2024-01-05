@@ -9,19 +9,20 @@ import subprocess
 import sys
 
 import gather
-from gather.commands import add_argument
+from gather.commands import add_argument, make_command_register
 
 LOGGER = logging.getLogger(__name__)
 
 _SUBCOMMANDS = gather.Collector()
 
 
-def command(*args, name=None):
-    return _SUBCOMMANDS.register(
-        transform=gather.Wrapper.glue(args),
-        name=name,
-    )
+#def command(*args, name=None):
+#    return _SUBCOMMANDS.register(
+#        transform=gather.Wrapper.glue(args),
+#        name=name,
+#    )
 
+command = make_command_register(_SUBCOMMANDS)
 
 def _wrap_run(args):
     orig_run = args.orig_run
