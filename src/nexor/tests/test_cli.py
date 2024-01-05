@@ -21,7 +21,19 @@ class TestMain(unittest.TestCase):  # pragma: no cover
                     run=lambda: None,
                     argv=["nexor"],
                     env={},
+                    is_subcommand=False,
                 ),
                 raises(SystemExit),
             )
         assert_that(stdout.getvalue(), contains_string("usage:"))
+
+    def test_version(self):
+        with contextlib.ExitStack() as stack:
+            stdout = stack.enter_context(mock.patch("sys.stdout", new=StringIO()))
+            cli.main(
+                run=lambda: None,
+                argv=["nexor-version"],
+                env={},
+                is_subcommand=True,
+            )
+        assert_that(stdout.getvalue(), contains_string("20"))

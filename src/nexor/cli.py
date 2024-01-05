@@ -14,11 +14,15 @@ _SUBCOMMANDS = gather.Collector()
 
 command = commandslib.make_command_register(_SUBCOMMANDS)
 
+
 @command()
 def version(args):
     print(__version__)
 
-def main(*, argv: Sequence[str], env: Mapping[str, str], run: Callable, is_subcommand: bool) -> None:
+
+def main(
+    *, argv: Sequence[str], env: Mapping[str, str], run: Callable, is_subcommand: bool
+) -> None:
     def error(args):
         parser.print_help()
         raise SystemExit(1)
@@ -39,8 +43,12 @@ def main(*, argv: Sequence[str], env: Mapping[str, str], run: Callable, is_subco
         sp_run=run,
     )
 
-def main_command(): # pragma: no cover
+
+def main_command():  # pragma: no cover
     runpy.run_module("nexor", run_name="__main__")
 
-def sub_command(): # pragma: no cover
-    runpy.run_module("nexor", run_name="__main__", init_globals=dict(IS_SUBCOMMAND=True))
+
+def sub_command():  # pragma: no cover
+    runpy.run_module(
+        "nexor", run_name="__main__", init_globals=dict(IS_SUBCOMMAND=True)
+    )
