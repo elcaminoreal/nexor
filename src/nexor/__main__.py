@@ -1,5 +1,4 @@
 from gather import entry
-
 from . import cli
 
 entry.dunder_main(
