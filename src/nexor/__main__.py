@@ -1,20 +1,7 @@
-import os
-import logging
-import subprocess
-import sys
-
+from gather import entry
 from . import cli
 
-if __name__ != "__main__":
-    raise ImportError("module cannot be imported", __name__)
-
-logging.basicConfig(
-    format="%(asctime)s:%(levelname)s:%(name)s:%(message)s",
-    level=logging.INFO,
-)
-cli.main(
-    argv=sys.argv,
-    env=os.environ,
-    run=subprocess.run,
-    is_subcommand=globals().get("IS_SUBCOMMAND", False),
+entry.dunder_main(
+    globals_dct=globals(),
+    command_data=cli.ENTRY_DATA,
 )
