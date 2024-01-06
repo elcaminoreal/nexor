@@ -3,9 +3,7 @@ import unittest
 import logging
 from hamcrest import (
     assert_that,
-    calling,
     contains_string,
-    raises,
 )
 from unittest import mock
 from io import StringIO
@@ -16,7 +14,6 @@ from .. import cli
 
 
 class TestMain(unittest.TestCase):  # pragma: no cover
-
     def test_version(self):
         with contextlib.ExitStack() as stack:
             stdout = stack.enter_context(mock.patch("sys.stdout", new=StringIO()))
