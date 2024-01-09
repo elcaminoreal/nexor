@@ -6,7 +6,8 @@ import sys
 from .cli import command
 from gather.commands import add_argument
 
-def parse_packages(contents): # pragma: no cover
+
+def parse_packages(contents):  # pragma: no cover
     def inner_parse():
         for a_line in contents.splitlines():
             a_line = (" " + a_line).split("#", 1)[0].strip()
@@ -16,9 +17,11 @@ def parse_packages(contents): # pragma: no cover
                 continue
             package, version = a_line.split("==")
             yield package.lower().replace("_", "-").replace(".", "-"), version
+
     return dict(inner_parse())
 
-def should_destroy(args, env_path, packages_to_install): # pragma: no cover
+
+def should_destroy(args, env_path, packages_to_install):  # pragma: no cover
     if args.force_recreate:
         return True
     python = env_path / "bin" / "python"
@@ -32,13 +35,14 @@ def should_destroy(args, env_path, packages_to_install): # pragma: no cover
     unneeded_packages = set(old_packages) - set(packages_to_install)
     return len(unneeded_packages) != 0
 
+
 @command(
     add_argument("--no-dry-run", action="store_true", default=False),
     add_argument("--force-recreate", action="store_true", default=False),
 )
 def env(args):  # pragma: no cover
     pwd = pathlib.Path(args.env["PWD"])
-    requirements = pwd/ "requirements-tests.txt"
+    requirements = pwd / "requirements-tests.txt"
     packages_to_install = parse_packages(requirements.read_text())
     try:
         root_path = pathlib.Path(args.env["WORKON_HOME"])
@@ -51,5 +55,23 @@ def env(args):  # pragma: no cover
         else:
             print("Dry run, not removing environment.")
     if not env_path.exists():
-        args.run([pathlib.Path(sys.base_exec_prefix) / "bin" / "python3", "-m", "venv", os.fspath(env_path)])
-    args.run([os.fspath(env_path / "bin" / "python"), "-m", "pip", "install", "-r", os.fspath(requirements), "-e", args.env["PWD"]])
+        args.run(
+            [
+                pathlib.Path(sys.base_exec_prefix) / "bin" / "python3",
+                "-m",
+                "venv",
+                os.fspath(env_path),
+            ]
+        )
+    args.run(
+        [
+            os.fspath(env_path / "bin" / "python"),
+            "-m",
+            "pip",
+            "install",
+            "-r",
+            os.fspath(requirements),
+            "-e",
+            args.env["PWD"],
+        ]
+    )
