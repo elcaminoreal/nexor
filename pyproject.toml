@@ -10,7 +10,7 @@ dynamic = ["version"]
 description = "A Python tooling nexus"
 readme = "README.rst"
 authors = [{name = "Moshe Zadka", email = "moshez@zadka.club"}]
-dependencies = ["gather>=2024.1.5.3", "copier", "tomlkit", "hyperlink", "toolz"]
+dependencies = ["gather>=2024.1.5.3", "copier", "tomlkit", "hyperlink", "toolz", "pip-tools"]
 
 [project.optional-dependencies]
 tests = ["virtue", "pyhamcrest", "coverage"]
@@ -52,5 +52,5 @@ is_main_var = "GITHUB_REF"
 is_main_match = ".*/trunk$"
 
 [project.scripts]
-nexor = "nexor.cli:ENTRY_DATA.main_command"
-nexor-version = "nexor.cli:ENTRY_DATA.sub_command"
+nexor = "nexor:ENTRY_DATA.main_command"
+nexor-version = "nexor:ENTRY_DATA.sub_command"

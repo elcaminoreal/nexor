@@ -3,7 +3,7 @@ import pathlib
 import shutil
 import sys
 
-from .cli import command
+from . import ENTRY_DATA
 from gather.commands import add_argument
 
 
@@ -36,7 +36,7 @@ def should_destroy(args, env_path, packages_to_install):  # pragma: no cover
     return len(unneeded_packages) != 0
 
 
-@command(
+@ENTRY_DATA.register(
     add_argument("--no-dry-run", action="store_true", default=False),
     add_argument("--force-recreate", action="store_true", default=False),
 )
@@ -53,7 +53,7 @@ def env(args):  # pragma: no cover
         if args.no_dry_run:
             shutil.rmtree(env_path)
         else:
-            print("Dry run, not removing environment.")
+            print("Dry run, not removing environment", env_path)
     if not env_path.exists():
         args.run(
             [
