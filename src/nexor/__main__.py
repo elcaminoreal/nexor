@@ -1,7 +1,7 @@
 from gather import entry
-from . import cli
+from . import ENTRY_DATA
 
 entry.dunder_main(
     globals_dct=globals(),
-    command_data=cli.ENTRY_DATA,
+    command_data=ENTRY_DATA,
 )
