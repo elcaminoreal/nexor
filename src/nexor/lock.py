@@ -7,7 +7,6 @@ import tomlkit
 from . import ENTRY_DATA
 
 
-
 def pip_compile(run, dependencies):  # pragma: no cover
     return run(
         [
