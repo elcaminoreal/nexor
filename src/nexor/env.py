@@ -26,7 +26,7 @@ def should_destroy(args, env_path, packages_to_install):  # pragma: no cover
         return True
     python = env_path / "bin" / "python"
     if not python.exists():
-        return True
+        return False
     res = args.safe_run([python, "-m", "pip", "freeze"], capture_output=True)
     try:
         old_packages = parse_packages(res.stdout)
