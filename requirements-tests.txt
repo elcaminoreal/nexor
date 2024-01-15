@@ -24,6 +24,8 @@ colorama==0.4.6
     # via
     #   copier
     #   virtue
+commander-data==2024.1.14.68987
+    # via -r -
 constantly==23.10.4
     # via twisted
 copier==9.1.0
