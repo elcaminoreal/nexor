@@ -24,8 +24,8 @@ def pip_compile(run, dependencies):  # pragma: no cover
 
 def lock_dependencies(run, project):  # pragma: no cover
     compiled_dependencies = {}
-    dependencies = project["dependencies"]
-    all_extras = dict(project["optional-dependencies"])
+    dependencies = project.get("dependencies", [])
+    all_extras = dict(project.get("optional-dependencies", {}))
     all_extras[""] = []
     for extra, extra_dependencies in all_extras.items():
         all_dependencies = dependencies + extra_dependencies
