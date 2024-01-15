@@ -1,7 +1,6 @@
 import os
 import pathlib
 import shutil
-import sys
 
 from commander_data import COMMAND
 from commander_data.common import BASE_PYTHON
@@ -23,8 +22,10 @@ def parse_packages(contents):  # pragma: no cover
 
     return dict(inner_parse())
 
-def python_module(env_path):
+
+def python_module(env_path):  # pragma: no cover
     return COMMAND(os.fspath(env_path / "bin" / "python"))(m=None)
+
 
 def should_destroy(args, env_path, packages_to_install):  # pragma: no cover
     if args.force_recreate:
@@ -65,6 +66,7 @@ def env(args):  # pragma: no cover
         )
     args.run(
         python_module(env_path).pip.install(
-            r=os.fspath(requirements), e=args.env["PWD"],
+            r=os.fspath(requirements),
+            e=args.env["PWD"],
         )
     )

@@ -1,5 +1,4 @@
 import pathlib
-import sys
 
 from commander_data.common import LOCAL_PYTHON as PYTHON
 from gather.commands import add_argument
