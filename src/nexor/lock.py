@@ -1,6 +1,7 @@
 import pathlib
 import sys
 
+from commander_data.common import LOCAL_PYTHON as PYTHON
 from gather.commands import add_argument
 import tomlkit
 
@@ -9,14 +10,7 @@ from . import ENTRY_DATA
 
 def pip_compile(run, dependencies):  # pragma: no cover
     return run(
-        [
-            sys.executable,
-            "-m",
-            "piptools",
-            "compile",
-            "-",
-            "--output-file=-",
-        ],
+        PYTHON.module.piptools.compile("-")(output_file="-"),
         input="\n".join(dependencies),
         capture_output=True,
     ).stdout

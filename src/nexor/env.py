@@ -3,8 +3,11 @@ import pathlib
 import shutil
 import sys
 
-from . import ENTRY_DATA
+from commander_data import COMMAND
+from commander_data.common import BASE_PYTHON
 from gather.commands import add_argument
+
+from . import ENTRY_DATA
 
 
 def parse_packages(contents):  # pragma: no cover
@@ -20,6 +23,8 @@ def parse_packages(contents):  # pragma: no cover
 
     return dict(inner_parse())
 
+def python_module(env_path):
+    return COMMAND(os.fspath(env_path / "bin" / "python"))(m=None)
 
 def should_destroy(args, env_path, packages_to_install):  # pragma: no cover
     if args.force_recreate:
@@ -27,7 +32,7 @@ def should_destroy(args, env_path, packages_to_install):  # pragma: no cover
     python = env_path / "bin" / "python"
     if not python.exists():
         return False
-    res = args.safe_run([python, "-m", "pip", "freeze"], capture_output=True)
+    res = args.safe_run(python_module(env_path).pip.freeze, capture_output=True)
     try:
         old_packages = parse_packages(res.stdout)
     except ValueError:
@@ -56,22 +61,10 @@ def env(args):  # pragma: no cover
             print("Dry run, not removing environment", env_path)
     if not env_path.exists():
         args.run(
-            [
-                pathlib.Path(sys.base_exec_prefix) / "bin" / "python3",
-                "-m",
-                "venv",
-                os.fspath(env_path),
-            ]
+            BASE_PYTHON.module.venv(os.fspath(env_path)),
         )
     args.run(
-        [
-            os.fspath(env_path / "bin" / "python"),
-            "-m",
-            "pip",
-            "install",
-            "-r",
-            os.fspath(requirements),
-            "-e",
-            args.env["PWD"],
-        ]
+        python_module(env_path).pip.install(
+            r=os.fspath(requirements), e=args.env["PWD"],
+        )
     )
