@@ -12,6 +12,7 @@ from . import ENTRY_DATA
 
 LOGGER = logging.getLogger(__name__)
 
+
 def parse_packages(contents):  # pragma: no cover
     def inner_parse():
         for a_line in contents.splitlines():

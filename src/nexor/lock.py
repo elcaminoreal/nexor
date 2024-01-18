@@ -1,10 +1,14 @@
 import pathlib
+import logging
 
 from commander_data.common import LOCAL_PYTHON as PYTHON
 from gather.commands import add_argument
 import tomlkit
 
 from . import ENTRY_DATA
+
+
+LOGGER = logging.getLogger(__name__)
 
 
 def pip_compile(run, dependencies):  # pragma: no cover
