@@ -1,12 +1,16 @@
 import os
 import pathlib
 import shutil
+import logging
 
 from commander_data import COMMAND
 from commander_data.common import BASE_PYTHON
 from gather.commands import add_argument
 
 from . import ENTRY_DATA
+
+
+LOGGER = logging.getLogger(__name__)
 
 
 def parse_packages(contents):  # pragma: no cover
@@ -59,7 +63,7 @@ def env(args):  # pragma: no cover
         if args.no_dry_run:
             shutil.rmtree(env_path)
         else:
-            print("Dry run, not removing environment", env_path)
+            LOGGER.info("Dry run, not removing environment: %s", env_path)
     if not env_path.exists():
         args.run(
             BASE_PYTHON.module.venv(os.fspath(env_path)),
