@@ -38,7 +38,7 @@ def relock_pyproject(*, safe_run, directory, no_dry_run):  # pragma: no cover
         if no_dry_run:
             output_file.write_text(contents)
         else:
-            print("Dry run, not relocking", output_file)
+            LOGGER.info("Dry run, not relocking", output_file)
 
 
 @ENTRY_DATA.register(
