@@ -26,9 +26,7 @@ def depend(args: argparse.Namespace) -> None:  # pragma: no cover
     else:
         dependencies = project.setdefault(  # type: ignore
             "optional-dependencies", {}
-        ).setdefault(
-            args.extra, []
-        )
+        ).setdefault(args.extra, [])
     if args.dependency not in dependencies:
         dependencies.append(args.dependency)
     revised = tomlkit.dumps(parsed)
