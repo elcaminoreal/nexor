@@ -25,6 +25,7 @@ def lock_dependencies(run, project):  # pragma: no cover
     all_extras = dict(project.get("optional-dependencies", {}))
     all_extras[""] = []
     for extra, extra_dependencies in all_extras.items():
+        LOGGER.info("Calculating new dependencies for %s", extra or "base")
         all_dependencies = dependencies + extra_dependencies
         compiled_dependencies[extra] = pip_compile(run, all_dependencies)
     return compiled_dependencies
@@ -36,13 +37,15 @@ def relock_pyproject(*, safe_run, directory, no_dry_run):  # pragma: no cover
     project = parsed["project"]
     locked_contents = lock_dependencies(safe_run, project)
     for name, contents in locked_contents.items():
+        output_file = directory / f"requirements{name}.txt"
         if name != "":
             name = "-" + name
         output_file = directory / f"requirements{name}.txt"
         if no_dry_run:
+            LOGGER.info("Updating %s", output_file)
             output_file.write_text(contents)
         else:
-            LOGGER.info("Dry run, not relocking", output_file)
+            LOGGER.info("Dry run, not relocking: %s", output_file)
 
 
 @ENTRY_DATA.register(

@@ -4,8 +4,6 @@
 #
 #    pip-compile --output-file=- -
 #
-annotated-types==0.6.0
-    # via pydantic
 attrs==23.2.0
     # via gather
 black==23.12.1
@@ -16,36 +14,16 @@ click==8.1.7
     # via
     #   black
     #   pip-tools
-colorama==0.4.6
-    # via copier
-commander-data==2024.1.14.68987
-    # via -r -
-copier==9.1.0
-    # via -r -
-decorator==5.1.1
-    # via copier
-dunamai==1.19.0
-    # via copier
+commander-data==2024.1.19.63931
+    # via
+    #   -r -
+    #   gather
 flake8==7.0.0
     # via -r -
-funcy==2.0
-    # via copier
-gather==2024.1.11.79239
+gather==2024.1.19.64919
     # via -r -
-hyperlink==21.0.0
-    # via -r -
-idna==3.6
-    # via hyperlink
 incremental==22.10.0
     # via gather
-jinja2==3.1.3
-    # via
-    #   copier
-    #   jinja2-ansible-filters
-jinja2-ansible-filters==1.3.2
-    # via copier
-markupsafe==2.1.3
-    # via jinja2
 mccabe==0.7.0
     # via flake8
 mypy-extensions==1.0.0
@@ -54,55 +32,24 @@ packaging==23.2
     # via
     #   black
     #   build
-    #   copier
-    #   dunamai
 pathspec==0.12.1
-    # via
-    #   black
-    #   copier
+    # via black
 pip-tools==7.3.0
     # via -r -
 platformdirs==4.1.0
     # via black
-plumbum==1.8.2
-    # via copier
-prompt-toolkit==3.0.36
-    # via questionary
 pycodestyle==2.11.1
     # via flake8
-pydantic==2.5.3
-    # via copier
-pydantic-core==2.14.6
-    # via pydantic
 pyflakes==3.2.0
     # via flake8
-pygments==2.17.2
-    # via copier
 pyproject-hooks==1.0.0
     # via build
-pyyaml==6.0.1
-    # via
-    #   copier
-    #   jinja2-ansible-filters
-    #   pyyaml-include
-pyyaml-include==1.3.2
-    # via copier
-questionary==2.0.1
-    # via copier
 tomlkit==0.12.3
     # via -r -
 toolz==0.12.0
-    # via
-    #   -r -
-    #   gather
-typing-extensions==4.9.0
-    # via
-    #   pydantic
-    #   pydantic-core
+    # via gather
 venusian==3.1.0
     # via gather
-wcwidth==0.2.13
-    # via prompt-toolkit
 wheel==0.42.0
     # via pip-tools
 
