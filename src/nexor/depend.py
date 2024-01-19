@@ -22,9 +22,11 @@ def depend(args: argparse.Namespace) -> None:  # pragma: no cover
     parsed = tomlkit.loads(original)
     project = parsed["project"]
     if args.extra is None:
-        dependencies = project.get("dependencies", [])
+        dependencies = project.get("dependencies", [])  # type: ignore
     else:
-        dependencies = project.setdefault("optional-dependencies", {}).setdefault(
+        dependencies = project.setdefault(  # type: ignore
+            "optional-dependencies", {}
+        ).setdefault(
             args.extra, []
         )
     if args.dependency not in dependencies:
